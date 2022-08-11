@@ -1,0 +1,65 @@
+/*! flex.css v0.1.0 */
+.flex-box {
+	display: flex;
+}
+
+.flex-rev-row {
+	flex-direction: row-reverse;
+}
+.flex-col {
+	flex-direction: column;
+}
+.flex-rev-col {
+	flex-direction: column-reverse;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+.flex-rev-wrap {
+	flex-wrap: wrap-reverse;
+}
+
+.flex-x-left {
+	justify-content: flex-start;
+}
+.flex-x-right {
+	justify-content: flex-end;
+}
+.flex-x-center {
+	justify-content: center;
+}
+.flex-x-between {
+	justify-content: space-between;
+}
+.flex-x-around {
+	justify-content: space-around;
+}
+.flex-y-left {
+	align-content: flex-start;
+}
+.flex-y-right {
+	align-content: flex-end;
+}
+.flex-y-center {
+	align-content: center;
+}
+.flex-y-between {
+	align-content: space-between;
+}
+.flex-y-around {
+	align-content: space-around;
+}
+
+.flex-mid {
+	align-items: center;
+}
+.flex-top {
+	align-items: flex-start;
+}
+.flex-bottom {
+	align-items: flex-end;
+}
+.flex-baseline {
+	align-items: baseline;
+}

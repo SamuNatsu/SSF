@@ -1,0 +1,33 @@
+const validateSuccess = function(el) {
+	el = "#validate-" + el;
+	$(el).text(" ✔").css("color", "green");
+}
+
+const validateFail = function(el) {
+	el = "#validate-" + el;
+	$(el).text(" ✘").css("color", "red");
+}
+
+$("#form-password").blur(function() {
+	let pass = $(this).val();
+	if (pass.length < 6 || !/\d/.test(pass) || !/[a-zA-Z]/.test(pass))
+		validateFail("password");
+	else 
+		validateSuccess("password");
+});
+
+$("#form-submit").click(function() {
+	$.post(
+		"install.php",
+		{
+			"password": $("#form-password").val()
+		},
+		function(r) {
+			r = JSON.parse(r);
+			if (r.status == "success")
+				window.location.href = r.href;
+			else 
+				alert(r.msg);
+		}
+	);
+});
