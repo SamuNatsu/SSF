@@ -1,0 +1,21 @@
+/*! dashboard style.css v0.0.1 */
+.login-history {
+	text-align: left;
+}
+
+.table-statistics {
+	margin: 30px auto;
+}
+.table-statistics th {
+	font-family: Georgia, serif;
+	font-size: 1.5em;
+}
+.table-statistics td {
+	font-family: Georgia, serif;
+	font-size: 1.2em;
+	font-style: italic;
+}
+
+#my-gravatar {
+	border-radius: 20px;
+}
