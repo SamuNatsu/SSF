@@ -12,14 +12,14 @@ if (is_file('../config.php')) {
 
 // Initialize components
 require_once('../var/Router.php');
-$Router = new \SSF\Router(__DIR__);
+\SSF\Router::init(__DIR__);
 
 // Validate password
-if (!isset($_POST['password'])) {
+if (\SSF\Router::POST('password') === null) {
 	echo '{"status":"fail","msg":"Invalid POST"}';
 	exit;
 }
-$pass = $_POST['password'];
+$pass = \SSF\Router::POST('password');
 if (strlen($pass) < 6) {
 	echo '{"status":"fail","msg":"Password length too short"}';
 	exit;
@@ -39,7 +39,7 @@ $rcs = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_+';
 $db = '';
 for ($i = 0; $i < 20; $i++)
 	$db .= $rcs[rand(0, 63)];
-file_put_contents('../config.php', "<?php\ndefine('__SSF__', '');\n\$DB_NAME = '$db';");
+file_put_contents('../config.php', "<?php\ndefine('__SSF__', '');\ndefine('__SSF_DB__', '$db');");
 
 // Initialize database
 require_once('../var/SleekDB/SleekDB.php');
@@ -49,8 +49,8 @@ $store->insert([
 	'password' => $pass,
 	'sitename' => 'Test site',
 	'description' => 'Test description',
-	'title-pattern' => '%title - %name'
+	'title-pattern' => '%title - %sitename'
 ]);
 
 // Jump to dashboard
-echo '{"status":"success","href":"' . $Router->root('/../admin') . '"}';
+echo '{"status":"success","href":"' . \SSF\Router::root('/../admin') . '"}';
