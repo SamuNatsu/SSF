@@ -1,52 +1,73 @@
 <?php
 namespace SSF;
 
-// Check flag
-if (!defined('__SSF__')) exit;
-
 class Router {
-	private $rootUrl = '';
-	private $route = [];
-	private $query = [];
+	static private $rootUrl = '';
+	static private $routeTable = [];
+	static private $pathTable = [];
 
-	public function __construct(string $rootDir) {
+	static public function init(string $rootDir): void {
 		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
-			$this->rootUrl = 'https://';
+			self::$rootUrl = 'https://';
 		else 
-			$this->rootUrl = 'http://';
-		$this->rootUrl .= $_SERVER['HTTP_HOST'];
-		$this->rootUrl .= str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath($rootDir));
+			self::$rootUrl = 'http://';
 
-		$tmp = explode('&', $_SERVER['QUERY_STRING']);
-		foreach ($tmp as $i) {
-			$kv = explode('=', $i);
-			if (count($kv) == 2)
-				$this->query[$kv[0]] = $kv[1];
-		}
+		self::$rootUrl .= $_SERVER['HTTP_HOST'];
+		self::$rootUrl .= str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath($rootDir));
 	}
 
-	public function root(string $suffix = '', bool $mode = false) {
+	static public function root(string $suffix = '', bool $mode = false): string {
 		if ($mode)
-			echo $this->rootUrl . $suffix;
-		return $this->rootUrl . $suffix;
+			echo self::$rootUrl . $suffix;
+		return self::$rootUrl . $suffix;
 	}
 
-	public function set(string $name, string $path) {
-		$this->route[$name] = $path;
+	static public function __callStatic(string $key, array $args): string {
+		if (!isset(self::$pathTable[$key]))
+			return '';
+		if (count($args) == 0)
+			return self::$pathTable[$key];
+		if (count($args) > 1 && $args[1] === true)
+			echo self::$pathTable[$key] . $args[0];
+		return self::$pathTable[$key] . $args[0];
 	}
 
-	public function get(string $name) {
-		return isset($this->route[$name]) ? $this->route[$name] : null;
+	static public function addPage(string $name, string $path): void {
+		self::$routeTable[$name] = $path;
 	}
 
-	public function despatch() {
-		if (!isset($this->query['page']) || !isset($this->route[$this->query['page']])) {
-			if (isset($this->route['404']))
-				require_once($this->route['404']);
-			else
-				header('HTTP/1.1 404 Not Found');
+	static public function addPath(string $name, string $path): void {
+		self::$pathTable[$name] = $path;
+	}
+
+	static public function getTable(): array {
+		return self::$routeTable;
+	}
+
+	static public function GET(string $key) {
+		return isset($_GET[$key]) ? $_GET[$key] : false;
+	}
+
+	static public function POST(string $key) {
+		return isset($_POST[$key]) ? $_POST[$key] : false;
+	}
+
+	static public function despatch(): void {
+		if (isset($_GET['action']))
+			\SSF\Action::despatch();
+		else if (isset($_GET['page']) && isset(self::$routeTable[$_GET['page']])) {
+			require_once(self::$routeTable[$_GET['page']]);
+			exit;
 		}
-		else
-			require_once($this->route[$this->query['page']]);
+
+		header('HTTP/1.1 404 Not Found');
+		if (isset(self::$routeTable['404']))
+			require_once(self::$routeTable['404']);
+		exit;
+	}
+
+	static public function jump(string $url): void {
+		header('Location: ' . $url);
+		exit;
 	}
 };

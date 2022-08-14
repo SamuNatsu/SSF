@@ -1,9 +1,6 @@
 <?php
 namespace SSF;
 
-// Check flag
-if (!defined('__SSF__')) exit;
-
 class Options {
 	static private $db_id;
 	static private $opt;
@@ -19,9 +16,9 @@ class Options {
 	}
 
 	static public function get(string $key) {
-		return isset(self::$opt[$key]) ? self::$opt[$key] : null;
+		return isset(self::$opt[$key]) ? self::$opt[$key] : false;
 	}
-	static public function set(string $key, mixed $val) {
+	static public function set(string $key, $val) {
 		self::$opt[$key] = $val;
 	}
 
