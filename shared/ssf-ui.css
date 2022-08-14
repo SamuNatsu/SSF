@@ -1,0 +1,204 @@
+/*! ssf-ui.css v0.0.1 */
+
+* {
+    scrollbar-width: none;
+    scrollbar-color: gray #fff;
+}
+*::-webkit-scrollbar {
+	width: 5px;
+}
+*::-webkit-scrollbar-track {
+	background: #fff;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: gray;
+	border-radius: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 5px 0;
+}
+
+input, textarea {
+	border: 3px solid lightgray;
+	margin: 16px auto;
+	outline: none;
+	padding: 10px;
+	width: 100%;
+	transition: all .2s;
+}
+input:focus, textarea:focus {
+	border: 3px solid gray;
+}
+
+.after-space {
+	margin-bottom: 20px;
+}
+
+.btn {
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: large;
+	font-weight: bold;
+	margin: 10px auto;
+	padding: 10px 15px;
+	transition: all .3s;
+	width: fit-content;
+}
+.btn[disabled] {
+	background: gray !important;
+	border: 3px solid gray !important;
+	color: white !important;
+	cursor: not-allowed !important;
+}
+.btn[disabled]:hover {
+	background: gray !important;
+	color: white !important;
+}
+.btn-black {
+	background: black;
+	border: 3px solid black;
+	color: white;
+}
+.btn-black:hover {
+	background: white;
+	color: black;
+}
+.btn-red {
+	background: red;
+	border: 3px solid red;
+	color: white;
+}
+.btn-red:hover {
+	background: white;
+	color: red;
+}
+.btn-green {
+	background: green;
+	border: 3px solid green;
+	color: white;
+}
+.btn-green:hover {
+	background: white;
+	color: green;
+}
+.btn-blue {
+	background: skyblue;
+	border: 3px solid skyblue;
+	color: white;
+}
+.btn-blue:hover {
+	background: white;
+	color: skyblue;
+}
+
+.container {
+	background: #fff;
+	box-shadow: gray 1px 1px 5px;
+	border-radius: 15px;
+	margin: 40px auto 0 auto;
+	padding: 20px;
+	transition: all .2s;
+}
+.container:hover {
+	box-shadow: darkgray 1px 1px 10px;
+}
+
+.fixed-frame {
+	display: flex;
+	height: 100%;
+	position: fixed;
+	width: 100%;
+}
+
+.hr-dashed {
+	border: none;
+	border-bottom: 2px dashed gray;
+}
+
+.modifiable {
+	display: flex;
+	justify-content: space-between;
+}
+.modifiable-btn {
+	color: cornflowerblue;
+	cursor: pointer;
+}
+.modifiable-btn:hover {
+	color: tomato;
+}
+
+.nav-bar {
+	background: #9cc;
+	box-shadow: gray 1px 1px 5px;
+	color: #fff;
+	display: flex;
+	justify-content: space-between;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1.2em;
+	transition: all .2s;
+	width: 100%;
+	z-index: 999999;
+}
+.nav-bar:hover {
+	box-shadow: darkgray 1px 1px 10px;
+}
+.nav-bar > div {
+	cursor: pointer;
+	padding: 10px 30px;
+}
+.nav-bar > div:hover {
+	background: #add;
+}
+.nav-bar > div[current] {
+	background: #add;
+	font-weight: bold;
+}
+
+.pad-10 {
+	padding: 10px;
+}
+
+.scrollable {
+	overflow-y: scroll;
+}
+
+.tb-no-border {
+	margin: 10px auto;
+	table-layout: fixed;
+	text-align: center;
+}
+.tb-no-border th, .tb-no-border td {
+	padding: 10px;
+}
+.tb-normal {
+	border-collapse: collapse;
+	margin: 10px auto;
+	table-layout: fixed;
+	text-align: center;
+}
+.tb-normal th {
+	border-top: 1px solid gray;
+	border-bottom: 2px solid black;
+	padding: 10px;
+}
+.tb-normal td {
+	border-bottom: 1px solid gray;
+	padding: 10px;
+}
+.tb-normal tbody > tr:hover {
+	background: whitesmoke;
+}
+
+.width-30 {
+	width: 30%;
+}
+.width-50 {
+	width: 50%;
+}
+.width-70 {
+	width: 70%;
+}
+.width-100 {
+	width: 100%;
+}

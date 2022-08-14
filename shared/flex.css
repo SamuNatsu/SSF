@@ -63,3 +63,13 @@
 .flex-baseline {
 	align-items: baseline;
 }
+
+.flex-x-self-right {
+	justify-self: right;
+}
+
+.flex-fixed {
+	height: 100%;
+	position: fixed;
+	width: 100%;
+}
