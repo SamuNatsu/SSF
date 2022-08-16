@@ -2,29 +2,26 @@
 namespace SSF;
 
 class Options {
-	static private $db_id;
-	static private $opt;
+	static private $_option;
 
 	static public function init() {
-		$result = $GLOBALS['DB']->findBy(['db', '=', 'options']);
-		self::$opt = $result[0];
-		self::$db_id = self::$opt['_id'];
-		unset(self::$opt['_id']);
+		self::$_option = $GLOBALS['DB']->findById(1);
+		unset(self::$_option['_id']);
 	}
 	static public function update() {
-		$GLOBALS['DB']->updateById(self::$db_id, self::$opt);
+		$GLOBALS['DB']->updateById(1, self::$_option);
 	}
 
 	static public function get(string $key) {
-		return isset(self::$opt[$key]) ? self::$opt[$key] : false;
+		return isset(self::$_option[$key]) ? self::$_option[$key] : false;
 	}
 	static public function set(string $key, $val) {
-		self::$opt[$key] = $val;
+		self::$_option[$key] = $val;
 	}
 
 	static private $titleString;
 	static private function titleFormat(string $str) {
-		if (!isset(self::$opt['title-pattern']) || !isset(self::$opt['sitename']))
+		if (!isset(self::$_option['title-pattern']) || !isset(self::$_option['sitename']))
 			return '';
 		self::$titleString = $str;
 		$str = preg_replace_callback_array([
@@ -32,10 +29,10 @@ class Options {
 				return Options::$titleString;
 			},
 			'/%sitename/' => function($match) {
-				return self::$opt['sitename'];
+				return self::$_option['sitename'];
 			}
 		],
-		self::$opt['title-pattern']);
+		self::$_option['title-pattern']);
 		return $str;
 	}
 	static public function title(string $str, bool $mode = false) {
@@ -43,5 +40,9 @@ class Options {
 		if ($mode)
 			echo $str;
 		return $str;
+	}
+
+	static public function gravatar(): string {
+		return self::$_option['gravatar-service'] . '/avatar/' . md5(strtolower(self::$_option['email'])) . '?s=256';
 	}
 };

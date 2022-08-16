@@ -46,4 +46,8 @@ class Session {
 	static public function getClientIP(): string {
 		return self::$clientIP;
 	}
+
+	static public function isLogin(): bool {
+		return $_SESSION['login'];
+	}
 };
