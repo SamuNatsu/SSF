@@ -18,14 +18,16 @@ $("#form-password").blur(function() {
 
 $("#form-submit").click(function() {
 	$.post(
-		"install.php",
+		"?action=ssf:install",
 		{
 			"password": $("#form-password").val()
 		},
 		function(r) {
 			r = JSON.parse(r);
-			if (r.status == "success")
+			if (r.status == "success") {
+				alert('Done!\nNow jumping to login page...');
 				window.location.href = r.href;
+			}
 			else 
 				alert(r.msg);
 		}
