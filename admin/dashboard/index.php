@@ -4,26 +4,25 @@ if (!defined('__SSF__')) exit;
 
 // Check is login
 if (\SSF\Session::get('login') !== true) {
-	header('Location: ' . \SSF\Router::root('/?page=login'));
+	header('Location: ' . \SSF\Path::url('admin', '/'));
 	exit;
 }
 
-// Add current path
-\SSF\Router::addPath('current', \SSF\Router::root('/dashboard'));
+// Set root
+\SSF\Path::setRootDir(__DIR__);
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title><?php \SSF\Options::title('Dashboard', true); ?></title>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/modern-normalize.min.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/flex.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/ssf.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/ssf-ui.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::current('/style.css', true); ?>"/>
-	<script src="<?php \SSF\Router::shared('/jquery.min.js', true); ?>"></script>
-	<script src="<?php \SSF\Router::shared('/hashes.min.js', true); ?>"></script>
-	<script src="<?php \SSF\Router::current('/script.js', true); ?>" defer></script>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/modern-normalize.min.css'); ?>"/>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/flex.css'); ?>"/>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/ssf-ui.css'); ?>"/>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('root', '/style.css'); ?>"/>
+	<script src="<?php \SSF\Path::_url('shared', '/jquery.min.js'); ?>"></script>
+	<script src="<?php \SSF\Path::_url('shared', '/hashes.min.js'); ?>"></script>
+	<script src="<?php \SSF\Path::_url('root', '/script.js'); ?>" defer></script>
 </head>
 <body><div class="fixed-frame flex-col">
 	<nav class="nav-bar">
@@ -38,7 +37,7 @@ if (\SSF\Session::get('login') !== true) {
 		<div id="nav-btn-logout">Log out</div>
 	</nav>
 	<div class="scrollable">
-		<div class="container width-70">
+		<div class="container width-70 before-space">
 			<h1>Statistics</h1>
 			<hr class="hr-dashed"/>
 			<table class="tb-no-border width-70 table-statistics">
@@ -61,24 +60,26 @@ if (\SSF\Session::get('login') !== true) {
 					<th>Views</th>
 				</tr></thead>
 				<tbody><tr>
-					<td>0</td>
+					<td><?php echo count(\SSF\Options::get('activated-plugin')); ?></td>
 					<td>0</td>
 				</tr></tbody>
 			</table>
 		</div>
-		<div class="container width-70">
+		<div class="container width-70 before-space">
 			<h1>My info</h1>
 			<hr class="hr-dashed"/>
 			<div class="flex-box">
-				<img id="my-gravatar" class="width-30" src="as"/>
+				<div class="width-30 flex-box flex-x-center flex-top">
+					<img id="my-gravatar" src="<?php echo \SSF\Options::gravatar(); ?>"/>
+				</div>
 				<div class="flex-box flex-col width-70 pad-10">
 					<h3>E-mail</h3>
 					<div id="form-email" class="modifiable after-space">
-						<div>abs@123.com</div>
-						<div class="modifiable-btn">Modify</div>
+						<div id="form-email-val"><?php echo \SSF\Options::get('email'); ?></div>
+						<div class="modifiable-btn" activate="0">Modify</div>
 					</div>
 					<h3>Gravatar URL</h3>
-					<div id="form-email" class="modifiable after-space">
+					<div id="form-gravatar-url" class="modifiable after-space">
 						<div>(Use e-mail and online gravatar services)</div>
 						<div class="modifiable-btn">Modify</div>
 					</div>

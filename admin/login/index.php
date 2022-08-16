@@ -4,36 +4,36 @@ if (!defined('__SSF__')) exit;
 
 // Check login
 if (\SSF\Session::get('login') === true)
-	\SSF\Router::jump(\SSF\Router::root('/?page=dashboard'));
+	\SSF\Router::jump(\SSF\Path::url('admin', '/?page=dashboard'));
 
-// Add current path
-\SSF\Router::addPath('current', \SSF\Router::root('/login'));
+// Set root
+\SSF\Path::setRootDir(__DIR__);
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title><?php \SSF\Options::title('Login', true); ?></title>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/modern-normalize.min.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/flex.css', true); ?>"/>
-	<link rel="stylesheet" href="<?php \SSF\Router::shared('/ssf.css', true); ?>"/>
-	<script src="<?php \SSF\Router::shared('/jquery.min.js', true); ?>"></script>
-	<script src="<?php \SSF\Router::shared('/hashes.min.js', true); ?>"></script>
-	<script src="<?php \SSF\Router::current('/script.js', true); ?>" defer></script>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/modern-normalize.min.css'); ?>"/>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/flex.css'); ?>"/>
+	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/ssf-ui.css'); ?>"/>
+	<script src="<?php \SSF\Path::_url('shared', '/jquery.min.js'); ?>"></script>
+	<script src="<?php \SSF\Path::_url('shared', '/hashes.min.js'); ?>"></script>
+	<script src="<?php \SSF\Path::_url('root', '/script.js'); ?>" defer></script>
 </head>
-<body><div class="flex-box flex-x-center flex-mid flex-fixed">
-	<div class="flex-box flex-col block hover-shadow">
-		<div class="flex-box flex-x-center after-space"><h1>Login</h1></div>
+<body><div class="fixed-frame flex-box flex-x-center flex-mid">
+	<div class="container width-30 flex-box flex-col">
+		<div class="flex-box flex-x-center"><h1>Login</h1></div>
+		<hr class="hr-dashed"/>
 		<div class="flex-box flex-col after-space">
 			<div id="warning-password" class="warning"></div>
 			<input id="form-password" type="password"/>
 			<div class="description">Please input dashboard password</div>
 		</div>
-		<div class="flex-box flex-x-space after-space">
-			<div id="btn-back" class="btn-1 btn-bl">Back to index</div>
-			<div id="btn-login" class="btn-1 btn-bk">Login</div>
+		<div class="flex-box flex-x-space">
+			<div id="btn-back" class="btn btn-blue">Back to index</div>
+			<div id="btn-login" class="btn btn-black">Login</div>
 		</div>
-		<div class="flex-box flex-x-right description footer-tag">Powered by Simple Site Framework</div>
 	</div>
 </div></body>
 </html>

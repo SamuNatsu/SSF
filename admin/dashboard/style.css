@@ -17,5 +17,7 @@
 }
 
 #my-gravatar {
+	border: 2px dashed gray;
 	border-radius: 20px;
+	margin-top: 20px;
 }

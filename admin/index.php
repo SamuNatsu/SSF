@@ -1,43 +1,45 @@
-<?php 
+<?php
 // Initialize flags
 ini_set('display_errors', 'On');
 ini_set('error_reporting', E_ALL);
+
+// Require components
+require_once('../var/SleekDB/SleekDB.php');
+require_once('../var/Action.php');
+require_once('../var/Options.php');
+require_once('../var/Path.php');
+require_once('../var/Router.php');
+require_once('../var/Session.php');
 
 // Check installed
 if (!is_file('../config.php')) exit;
 require_once('../config.php');
 
-// Initialize components
-require_once('../var/SleekDB/SleekDB.php');
-$DB = new \SleekDB\store($DB_NAME, '../', ['timeout' => false]);
+// Initialize db
+$DB = new \SleekDB\store(__SSF_DB__, '../', ['timeout' => false]);
 
-require_once('../var/Action.php');
+// Initialize paths
+\SSF\Path::setDir('admin', '../admin');
+\SSF\Path::setDir('var', '../var');
+\SSF\Path::setDir('shared', '../shared');
+\SSF\Path::setDir('www', '../');
 
-require_once('../var/Options.php');
+// Initialize options
 \SSF\Options::init();
 
-require_once('../var/Router.php');
-\SSF\Router::init(__DIR__);
+// Register 404 page
+\SSF\Router::addPage('404', \SSF\Path::dir('shared', '/404.php'));
 
-// Initialize pages
-\SSF\Router::addPage('404', '../shared/404.php');
-
-\SSF\Router::addPage('login', './login/index.php');
+// Register login page
 require_once('./login/action.php');
-\SSF\Action::register('ssf', 'login', '\\SSF\\Action\\Login');
+\SSF\Router::addPage('', './login/index.php');
 
-\SSF\Router::addPage('dashboard', './dashboard/index.php');
+// Register dashboard page
 require_once('./dashboard/action.php');
-\SSF\Action::register('ssf', 'logout', '\\SSF\\Action\\Logout');
+\SSF\Router::addPage('dashboard', './dashboard/index.php');
 
-\SSF\Router::addPath('shared', \SSF\Router::root('/../shared'));
-
-require_once('../var/Session.php');
-
+// Start session
 \SSF\Session::start();
 
-// Router despatch
-if (\SSF\Router::GET('page') === false && \SSF\Router::GET('action') === false)
-	\SSF\Router::jump(\SSF\Router::root('/?page=login'));
-else
-	\SSF\Router::despatch();
+// Despatch
+\SSF\Router::despatch();
