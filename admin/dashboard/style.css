@@ -21,3 +21,10 @@
 	border-radius: 20px;
 	margin-top: 20px;
 }
+
+#form-clear-history {
+	border-width: 2px;
+	font-weight: normal;
+	margin: 0;
+	padding: 2px 10px;
+}

@@ -9,32 +9,49 @@ $("#nav-btn-logout").click(function() {
 	)
 });
 
-$("#form-email > div.modifiable-btn").click(function() {
-	if ($(this).attr("activate") == "0") {
-		$("#form-email").prepend('<input id="form-email-input" type="text" class="width-50"/>');
-		$("#form-email-input").val($("#form-email-val").text());
-		$("#form-email-val").remove();
-		$(this).text("OK").attr("activate", "1");
+$(".ssf-i-modify-field").each(function() {
+	if ($(this).text().length == 0)
+		$(this).attr("data-empty", "1");
+});
+$(".ssf-i-modify-btn").click(function() {
+	let main = $(this).parent();
+	let root = main.parent();
+	let field = main.children(".ssf-i-modify-field");
+	let key = field.attr("data-field");
+	if (root.attr("data-active") == "0") {
+		let oldval = field.text();
+		if (field.attr("data-empty") === "1")
+			oldval = "";
+		field.prop("outerHTML", '<input class="ssf-i-modify-field width-50" type="text" value="' + oldval + '" data-field="' + key + '" data-old-val="' + oldval + '"/>');
+		$(this).text("OK");
+		root.attr("data-active", "1");
 	}
 	else {
-		$.post(
-			"?action=ssf:modify_email",
-			{"email":$("#form-email-input").val()},
-			function (r, s) {
-				if (s != "success") {
-					alert("Ajax error occurred");
-					return;
-				}
+		if (field.attr("data-old-val") == field.val()) {
+			let b = field.attr("data-old-val").length;
+			field.prop("outerHTML", '<div class="ssf-i-modify-field" data-field="' + key + '">' + field.val() + '</div>');
+			if (b == 0)
+				main.children(".ssf-i-modify-field").attr("data-empty", "1");
+			$(this).text("Modify");
+			root.attr("data-active", "0");
+			return;
+		}
+		let query = {};
+		query[key] = field.val();
+		$.post("?action=" + $(this).attr("data-action"), query)
+			.done(function(r) {
 				r = JSON.parse(r);
 				if (r.status == "fail")
 					alert("Fail: " + r.msg);
 				else {
-					$("#form-email").prepend('<div id="form-email-val">' + $("#form-email-input").val() + '</div>');
-					$("#form-email-input").remove();
-					$(this).text("Modify").attr("activate", "0");
-					window.location.reload();
+					field.prop("outerHTML", '<div data-field="' + key + '">' + field.val() + '</div>');
+					$(this).text("Modify");
+					root.attr("data-active", "0");
+					alert("Successfully modified");
 				}
-			}
-		);
+			})
+			.fail(function() {
+				alert("Ajax error occurred");
+			});
 	}
 });

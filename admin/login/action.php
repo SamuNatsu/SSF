@@ -2,33 +2,26 @@
 namespace SSF\Action;
 
 class Login implements \SSF\ActionInterface {
+	static private function checkPOST(): void {
+		if (\SSF\Router::POST('password') === false) {
+			echo '{"status":"fail","msg":"Invalid POST"}';
+			exit;
+		}
+	}
+
 	static public function run(): void {
+		self::checkPOST();
 		$pass = \SSF\Router::POST('password');
-		$hist = \SSF\Options::get('login-history');
 
-		if (\SSF\Options::get('password') === $pass) {
-			\SSF\Session::set('login', true);
-			\SSF\Session::set('login_time', time());
-
-			array_push($hist, [
-				'time' => time(),
-				'ip' => \SSF\Session::getClientIP(),
-				'status' => 'Success'
-			]);
+		if (\SSF\Options::getPassword() === $pass) {
+			\SSF\Session::setLogin();
+			\SSF\Options::addLoginHistory('Success');
 			echo '{"status":"success","href":"' . \SSF\Path::url('admin', '/?page=dashboard') . '"}';
 		}
 		else {
-			array_push($hist, [
-				'time' => time(),
-				'ip' => \SSF\Session::getClientIP(),
-				'status' => 'Wrong password'
-			]);
+			\SSF\Options::addLoginHistory("Wrong password");
 			echo '{"status":"fail","msg":"Wrong password"}';
 		}
-		if (count($hist) > 50)
-			array_shift($hist);
-		\SSF\Options::set('login-history', $hist);
-		\SSF\Options::update();
 	}
 };
 \SSF\Action::register('ssf:login', '\SSF\Action\Login');

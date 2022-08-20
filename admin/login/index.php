@@ -13,7 +13,7 @@ if (\SSF\Session::get('login') === true)
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php \SSF\Options::title('Login', true); ?></title>
+	<title><?php \SSF\Options::_title('Login'); ?></title>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/modern-normalize.min.css'); ?>"/>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/flex.css'); ?>"/>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/ssf-ui.css'); ?>"/>
@@ -28,7 +28,7 @@ if (\SSF\Session::get('login') === true)
 		<div class="flex-box flex-col after-space">
 			<div id="warning-password" class="warning"></div>
 			<input id="form-password" type="password"/>
-			<div class="description">Please input dashboard password</div>
+			<div class="ssf-st-desc">Please input dashboard password</div>
 		</div>
 		<div class="flex-box flex-x-space">
 			<div id="btn-back" class="btn btn-blue">Back to index</div>

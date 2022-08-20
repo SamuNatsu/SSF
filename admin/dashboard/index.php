@@ -15,7 +15,7 @@ if (\SSF\Session::get('login') !== true) {
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php \SSF\Options::title('Dashboard', true); ?></title>
+	<title><?php \SSF\Options::_title('Dashboard'); ?></title>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/modern-normalize.min.css'); ?>"/>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/flex.css'); ?>"/>
 	<link rel="stylesheet" href="<?php \SSF\Path::_url('shared', '/ssf-ui.css'); ?>"/>
@@ -60,7 +60,7 @@ if (\SSF\Session::get('login') !== true) {
 					<th>Views</th>
 				</tr></thead>
 				<tbody><tr>
-					<td><?php echo count(\SSF\Options::get('activated-plugin')); ?></td>
+					<td>0</td>
 					<td>0</td>
 				</tr></tbody>
 			</table>
@@ -70,28 +70,47 @@ if (\SSF\Session::get('login') !== true) {
 			<hr class="hr-dashed"/>
 			<div class="flex-box">
 				<div class="width-30 flex-box flex-x-center flex-top">
-					<img id="my-gravatar" src="<?php echo \SSF\Options::gravatar(); ?>"/>
+					<img id="my-gravatar" src="<?php \SSF\Options::_gravatar(); ?>"/>
 				</div>
 				<div class="flex-box flex-col width-70 pad-10">
-					<h3>E-mail</h3>
-					<div id="form-email" class="modifiable after-space">
-						<div id="form-email-val"><?php echo \SSF\Options::get('email'); ?></div>
-						<div class="modifiable-btn" activate="0">Modify</div>
+					<!-- Email -->
+					<div class="ssf-i-modify" data-active="0">
+						<h3>Email</h3>
+						<div class="ssf-i-modify-main">
+							<div class="ssf-i-modify-field" data-field="email"><?php echo \SSF\Options::get('email'); ?></div>
+							<div class="ssf-i-modify-btn" data-action="ssf:modify_email">Modify</div>
+						</div>
 					</div>
-					<h3>Gravatar URL</h3>
-					<div id="form-gravatar-url" class="modifiable after-space">
-						<div>(Use e-mail and online gravatar services)</div>
-						<div class="modifiable-btn">Modify</div>
+					<hr class="hr-dashed"/>
+					<!-- Gravatar URL -->
+					<div class="ssf-i-modify" data-active="0">
+						<h3>Gravatar URL</h3>
+						<div class="ssf-i-modify-main">
+							<div class="ssf-i-modify-field" data-field="url"><?php echo \SSF\Options::get('gravatar_url'); ?></div>
+							<div class="ssf-i-modify-btn" data-action="ssf:modify_gravatar_url">Modify</div>
+						</div>
+						<div class="ssf-st-desc">If empty, online gravatar service would be used as your gravatar url</div>
 					</div>
-					<h3>Recent login history</h3>
+					<hr class="hr-dashed"/>
+					<!-- Max login history -->
+					<div class="ssf-i-modify" data-active="0">
+						<h3>Max login history</h3>
+						<div class="ssf-i-modify-main">
+							<div class="ssf-i-modify-field" data-field="limit"><?php echo \SSF\Options::getMaxLoginHistory(); ?></div>
+							<div class="ssf-i-modify-btn" data-action="ssf:modify_max_login_history">Modify</div>
+						</div>
+						<div class="ssf-st-desc">Set 0 to disable history, set -1 to keep infinite history</div>
+					</div>
+					<hr class="hr-dashed"/>
+					<!-- Login history -->
+					<div class="flex-box flex-bottom flex-x-between">
+						<h3>Recent login history</h3>
+						<div id="form-clear-history" class="btn btn-red">Clear</div>
+					</div>
 					<table class="tb-normal width-100 login-history">
-						<thead><tr>
-							<th>Time</th>
-							<th>IP</th>
-							<th>Status</th>
-						</tr></thead>
+						<thead><tr><th>Time</th><th>IP</th><th>Status</th></tr></thead>
 						<tbody><?php
-							$hist = \SSF\Options::get('login_history');
+							$hist = \SSF\Options::getLoginHistory();
 							for ($i = count($hist) - 1; $i >= 0; $i--) {
 								$tm = date("Y/m/d H:i:s", $hist[$i]['time']);
 								echo "<tr><td>$tm</td><td>{$hist[$i]['ip']}</td><td>{$hist[$i]['status']}</td></tr>";
