@@ -10,7 +10,7 @@ const validateFail = function(el) {
 
 $("#form-password").blur(function() {
 	let pass = $(this).val();
-	if (pass.length < 6 || !/\d/.test(pass) || !/[a-zA-Z]/.test(pass))
+	if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d).{8,}$/.test(pass))
 		validateFail("password");
 	else 
 		validateSuccess("password");
@@ -18,11 +18,9 @@ $("#form-password").blur(function() {
 
 $("#form-submit").click(function() {
 	$.post(
-		"?action=ssf:install",
-		{
-			"password": $("#form-password").val()
-		},
-		function(r) {
+		"?action=ssf:install", 
+		{"password": $("#form-password").val()})
+		.done(function (r) {
 			r = JSON.parse(r);
 			if (r.status == "success") {
 				alert('Done!\nNow jumping to login page...');
@@ -30,6 +28,8 @@ $("#form-submit").click(function() {
 			}
 			else 
 				alert(r.msg);
-		}
-	);
+		})
+		.fail(function () {
+			alert("Ajax error occurred");
+		});
 });

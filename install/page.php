@@ -17,7 +17,7 @@ if (!defined('__SSF__')) exit;
 	<script src="<?php \SSF\Path::_url('root', '/script.js'); ?>" defer></script>
 </head>
 <body><div class="flex-box flex-col">
-	<header class="flex-box flex-x-center flex-mid hover-shadow">Install Simple Site Framework</header>
+	<header class="flex-box flex-x-center flex-mid">Install Simple Site Framework</header>
 	<div class="container width-50 before-space">
 		<h2>Intro</h2>
 		<p><b>First, thanks for choosing our framework!</b></p>
@@ -27,12 +27,12 @@ if (!defined('__SSF__')) exit;
 		<p><a href="https://github.com/rakibtg/SleekDB" target="_blank"><b>SleekDB</b></a>: File based php database (MIT Licensed)</p>
 		<p><a href="https://github.com/erusev/parsedown" target="_blank"><b>Parsedown</b></a>: Markdown-Html parser (MIT Licensed)</p>
 		<p>Special thanks to the maintainers of components above!</p>
-		<p>The SSF version you install now is: <span class="warning">alpha 0.0.2</span></p>
+		<p>The SSF version you install now is: <span class="warning">alpha 0.0.3</span></p>
 	</div>
 	<div class="container width-50 before-space">
 		<h2>Dashboard password<span id="validate-password"></span></h2>
 		<input id="form-password" type="password"/>
-		<div class="description">Length &gt;= 6, contains digit and letter</div>
+		<div class="ssf-st-desc">Length &gt;= <b>8</b>, contains <b>upper case</b> letter, <b>lower case</b> letter, <b>digit</b> and any number of special character</div>
 	</div>
 	<button id="form-submit" class="btn btn-black before-space">Install</button>
 	<footer></footer>

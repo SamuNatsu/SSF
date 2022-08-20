@@ -21,7 +21,7 @@ if (is_file('../config.php')) exit;
 // Register install page
 require_once('./action.php');
 \SSF\Action::register('ssf:install', '\SSF\Action\Install');
-\SSF\Router::addPage('', './page.php');
+\SSF\Router::register('', './page.php');
 
 // Despatch
 \SSF\Router::despatch();
