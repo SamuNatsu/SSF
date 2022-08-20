@@ -64,6 +64,9 @@
 	align-items: baseline;
 }
 
+.flex-x-self-left {
+	justify-self: left;
+}
 .flex-x-self-right {
 	justify-self: right;
 }
