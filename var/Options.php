@@ -2,47 +2,84 @@
 namespace SSF;
 
 class Options {
-	static private $_option;
-
-	static public function init() {
-		self::$_option = $GLOBALS['DB']->findById(1);
-		unset(self::$_option['_id']);
+	static public function getPassword(): string {
+		$tmp = \SSF\DB::at('options')->findById(1);
+		return $tmp['password'];
 	}
-	static public function update() {
-		$GLOBALS['DB']->updateById(1, self::$_option);
-	}
-
-	static public function get(string $key) {
-		return isset(self::$_option[$key]) ? self::$_option[$key] : false;
-	}
-	static public function set(string $key, $val) {
-		self::$_option[$key] = $val;
+	static public function setPassword(string $pass): string {
+		$tmp = \SSF\DB::at('options')->findById(1);
+		$tmp['password'] = $pass;
+		unset($tmp['_id']);
+		\SSF\DB::at('options')->updateById(1, $tmp);
 	}
 
-	static private $titleString;
-	static private function titleFormat(string $str) {
-		if (!isset(self::$_option['title-pattern']) || !isset(self::$_option['sitename']))
-			return '';
-		self::$titleString = $str;
-		$str = preg_replace_callback_array([
-			'/%title/' => function($match) {
-				return Options::$titleString;
+	static public function getLoginHistory(): array {
+		$tmp = \SSF\DB::at('options')->findById(2);
+		return $tmp['login_history'];
+	}
+	static public function addLoginHistory(string $status): void {
+		$tmp = \SSF\DB::at('options')->findById(2);
+		if ($tmp['max_login_history'] === 0)
+			return;
+		array_push($tmp['login_history'], [
+			'time' => time(),
+			'ip' => \SSF\Session::getClientIP(),
+			'status' => $status
+		]);
+		if (count($tmp) >= $tmp['max_login_history'])
+			array_shift($tmp['login_history']);
+		unset($tmp['_id']);
+		\SSF\DB::at('options')->updateById(2, $tmp);
+	}
+
+	static public function getMaxLoginHistory(): int {
+		$tmp = \SSF\DB::at('options')->findById(2);
+		return $tmp['max_login_history'];
+	}
+	static public function setMaxLoginHistory(int $mx): void {
+		$tmp = \SSF\DB::at('options')->findById(2);
+		$tmp['max_login_history'] = $mx;
+		unset($tmp['_id']);
+		\SSF\DB::at('options')->updateById(2, $tmp);
+	}
+
+	static public function title(string $tl): string {
+		$tmp = \SSF\DB::at('options')->findById(1);
+		return preg_replace_callback_array([
+			'/%title/' => function($match) use($tl) {
+				return $tl;
 			},
-			'/%sitename/' => function($match) {
-				return self::$_option['sitename'];
+			'/%sitename/' => function($match) use($tmp) {
+				return $tmp['sitename'];
 			}
-		],
-		self::$_option['title-pattern']);
-		return $str;
+		], $tmp['title_pattern']);
 	}
-	static public function title(string $str, bool $mode = false) {
-		$str = self::titleFormat($str);
-		if ($mode)
-			echo $str;
-		return $str;
+	static public function _title(string $tl): void {
+		echo self::title($tl);
 	}
 
 	static public function gravatar(): string {
-		return self::$_option['gravatar-service'] . '/avatar/' . md5(strtolower(self::$_option['email'])) . '?s=256';
+		$tmp = \SSF\DB::at('options')->findById(1);
+		if ($tmp['gravatar_url'] !== "")
+			return $tmp['gravatar_url'];
+		$url = $tmp['gravatar_service'] . '/avatar/';
+		$url .= md5(strtolower(trim($tmp['email'])));
+		$url .= '?s=256';
+		return $url;
 	}
+	static public function _gravatar(): void {
+		echo self::gravatar();
+	}
+
+	static public function get(string $key, $default = false) {
+		$tmp = \SSF\DB::at('options')->findById(1);
+		return isset($tmp[$key]) ? $tmp[$key] : $default;
+	}
+	static public function set(string $key, $val) {
+		$tmp = \SSF\DB::at('options')->findById(1);
+		$tmp[$key] = $val;
+		unset($tmp['_id']);
+		\SSF\DB::at('options')->updateById(1, $tmp);
+	}
+
 };

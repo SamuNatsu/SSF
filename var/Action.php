@@ -11,7 +11,7 @@ class Action {
 	static public function register(string $name, string $action, bool $overwrite = true): bool {
 		if (preg_match('/^\w+:\w+$/', $name) !== 1)
 			return false;
-		
+
 		if (isset(self::$_table[$name]) && !$overwrite)
 			return false;
 
@@ -24,7 +24,7 @@ class Action {
 			unset(self::$_table[$name]);
 	}
 
-	static public function get_table(): array {
+	static public function getTable(): array {
 		return self::$_table;
 	}
 
@@ -38,7 +38,7 @@ class Action {
 
 		$tmp = self::$_table[$tmp];
 		if (!method_exists($tmp, 'run')) {
-			header('HTTP/1.1 404 Not Found');
+			header('HTTP/1.1 501 Not Implemented');
 			exit;
 		}
 

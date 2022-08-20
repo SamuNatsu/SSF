@@ -29,25 +29,25 @@ class Path {
 		}
 	}
 
-	static public function url(string $key, string $suffix = ''): string {
-		return isset(self::$_urlTable[$key]) ? self::$_urlTable[$key] . $suffix : '';
+	static public function url(string $key, string $suffix = '', $fallback = false) {
+		return isset(self::$_urlTable[$key]) ? self::$_urlTable[$key] . $suffix : $fallback;
 	}
-	static public function _url(string $key, string $suffix = ''): void {
-		echo self::url($key, $suffix);
+	static public function _url(string $key, string $suffix = '', string $fallback = ''): void {
+		echo self::url($key, $suffix, $fallback);
 	}
 
-	static public function dir(string $key, string $suffix = ''): string {
-		return isset(self::$_dirTable[$key]) ? self::$_dirTable[$key] . $suffix : '';
+	static public function dir(string $key, string $suffix = '', $fallback = false): string {
+		return isset(self::$_dirTable[$key]) ? self::$_dirTable[$key] . $suffix : $fallback;
 	}
-	static public function _dir(string $key, string $suffix = ''): void {
-		echo self::dir($key, $suffix);
+	static public function _dir(string $key, string $suffix = '', string $fallback = ''): void {
+		echo self::dir($key, $suffix, $fallback);
 	}
 
 	static public function getDirTable(): array {
 		return self::$_dirTable;
 	}
 	
-	static public function getUrlTable():array {
+	static public function getUrlTable(): array {
 		return self::$_urlTable;
 	}
 

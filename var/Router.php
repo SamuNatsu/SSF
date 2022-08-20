@@ -4,29 +4,32 @@ namespace SSF;
 class Router {
 	static private $_table = [];
 
-	static public function addPage(string $key, string $path, bool $overwrite = true): bool {
+	static public function register(string $key, string $path, bool $overwrite = true): bool {
 		if (isset(self::$_table[$key]) && !$overwrite)
+			return false;
+
+		if (!is_file($path))
 			return false;
 
 		self::$_table[$key] = $path;
 		return true;
 	}
 
-	static public function removePage(string $key): void {
+	static public function unregister(string $key): void {
 		if (isset(self::$_table[$key]))
 			unset(self::$_table[$key]);
 	}
 
-	static public function get_table(): array {
+	static public function getTable(): array {
 		return self::$_table;
 	}
 
-	static public function GET(string $key) {
-		return isset($_GET[$key]) ? $_GET[$key] : false;
+	static public function GET(string $key, $fallback = false) {
+		return isset($_GET[$key]) ? $_GET[$key] : $fallback;
 	}
 
-	static public function POST(string $key) {
-		return isset($_POST[$key]) ? $_POST[$key] : false;
+	static public function POST(string $key, $fallback = false) {
+		return isset($_POST[$key]) ? $_POST[$key] : $fallback;
 	}
 
 	static public function jump(string $url): void {
