@@ -6,7 +6,8 @@ class Path {
 	static private $_dirTable = [];
 
 	static public function setDir(string $key, string $dir): void {
-		self::$_dirTable[$key] = realpath($dir);
+		if ((self::$_dirTable[$key] = realpath($dir)) === false)
+			throw new \Exception("\SSF\Path error, cannot get absolute path of $dir");
 
 		$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://');
 		$url .= $_SERVER['HTTP_HOST'];
@@ -14,7 +15,7 @@ class Path {
 			($_SERVER['SERVER_PORT'] == '443' && $url[4] != 's') ||
 			($_SERVER['SERVER_PORT'] != '80' && $_SERVER['SERVER_PORT'] != '443'))
 			$url .= ':' . $_SERVER['SERVER_PORT'];
-		$url .= str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath($dir));
+		$url .= str_replace($_SERVER['DOCUMENT_ROOT'], '', self::$_dirTable[$key]);
 
 		self::$_urlTable[$key] = $url;
 	}
