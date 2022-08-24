@@ -10,7 +10,7 @@ const validateFail = function(el) {
 
 $("#form-password").blur(function() {
 	let pass = $(this).val();
-	if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d).{8,}$/.test(pass))
+	if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)[A-Za-z\d@$!%*#?&-]{8,}$/.test(pass))
 		validateFail("password");
 	else 
 		validateSuccess("password");

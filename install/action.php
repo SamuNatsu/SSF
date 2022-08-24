@@ -50,32 +50,10 @@ class Install implements \SSF\ActionInterface {
 
 		$dbname = self::genRndStr();
 		$dbdir = \SSF\Path::dir('www', "/$dbname");
+
+		\SSF\Database::init($dbdir);
+		\SSF\Database::create($pass);
 		file_put_contents(\SSF\Path::dir('www', '/config.php'), "<?php\ndefine('__SSF__', '');\ndefine('__SSF_DB__', '$dbdir');\n");
-
-		// Initialize db
-		require_once(\SSF\Path::dir('var', '/SleekDB/SleekDB.php'));
-		$db = new \SleekDB\store('options', $dbdir, ['timeout' => false]);
-		$db->insert([
-			'password' => $pass,
-			'sitename' => 'Test site',
-			'description' => 'Test description',
-			'title_pattern' => '%title - %sitename',
-			'email' => 'test@test.test',
-			'gravatar_service' => 'https://gravatar.loli.net',
-			'gravatar_url' => '',
-			'time_format' => 'Y/m/d H:i:s'
-		]);
-		$db->insert([
-			'max_login_history' => 30,
-			'login_history' => []
-		]);
-		$db->insert(['active_plugin' => []]);
-		$db->insert(['posts_meta' => []]);
-		$db->insert(['category' => []]);
-		$db->insert(['tag' => []]);
-		$db->insert(['link' => []]);
-
-		$db = new \SleekDB\store('posts', $dbdir, ['timeout' => false]);
 
 		echo '{"status":"success","href":"' . \SSF\Path::url('admin', '/') . '"}';
 	}

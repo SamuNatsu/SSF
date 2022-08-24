@@ -6,6 +6,8 @@ define('__SSF__', '');
 
 // Require components
 require_once('../var/Action.php');
+require_once('../var/Database.php');
+require_once('../var/Meta.php');
 require_once('../var/Path.php');
 require_once('../var/Router.php');
 
