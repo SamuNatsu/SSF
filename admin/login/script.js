@@ -1,29 +1,20 @@
-let passErrCnt = 0;
-const setWarning = function(el, str) {
-	++passErrCnt;
-	if (passErrCnt > 1)
-		str += " +" + (passErrCnt - 1);
-	$("#warning-" + el).text(str);
-};
+const md5 = new Hashes.MD5();
+const sha1 = new Hashes.SHA1();
 
-$("#btn-back").click(function() {
+$("#b-back").click(function() {
 	window.location.href = "/";
 });
 
-const md5 = new Hashes.MD5();
-const sha1 = new Hashes.SHA1();
-$("#btn-login").click(function() {
-	let pass = $("#form-password").val();
+$("#b-login").click(function() {
+	let pass = $("#i-password").val();
 	pass = md5.hex(sha1.hex(pass));
-	$.post(
-		"?action=ssf:login",
-		{"password": pass})
+	$.post("?action=ssf:login", {"password": pass})
 		.done(function (r) {
 			r = JSON.parse(r);
-			if (r.status == 'success')
-				window.location.href = r.href;
+			if (r.status == "success")
+				window.location.href = "?page=dashboard";
 			else
-				setWarning("password", r.msg);
+				alert(r.msg);
 		})
 		.fail(function() {
 			alert("Ajax error occurred");

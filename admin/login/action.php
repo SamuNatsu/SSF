@@ -5,6 +5,7 @@ class Login implements \SSF\ActionInterface {
 	static private function checkPOST(): void {
 		if (\SSF\Router::POST('password') === false) {
 			echo '{"status":"fail","msg":"Invalid POST"}';
+			\SSF\Option::addHistory("[Fail] Login: Invalid POST");
 			exit;
 		}
 	}
@@ -13,13 +14,19 @@ class Login implements \SSF\ActionInterface {
 		self::checkPOST();
 		$pass = \SSF\Router::POST('password');
 
-		if (\SSF\Options::getPassword() === $pass) {
+		if (\SSF\Session::isLogin()) {
+			echo '{"status":"fail","msg":"Already logined"}';
+			\SSF\Option::addHistory("[Fail] Login: Already logined");
+			exit;
+		}
+
+		if (\SSF\Option::get('password') === $pass) {
 			\SSF\Session::setLogin();
-			\SSF\Options::addLoginHistory('Success');
-			echo '{"status":"success","href":"' . \SSF\Path::url('admin', '/?page=dashboard') . '"}';
+			\SSF\Option::addHistory('[Success] Login');
+			echo '{"status":"success"}';
 		}
 		else {
-			\SSF\Options::addLoginHistory("Wrong password");
+			\SSF\Option::addHistory("[Fail] Login: Wrong password");
 			echo '{"status":"fail","msg":"Wrong password"}';
 		}
 	}

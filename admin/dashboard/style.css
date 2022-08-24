@@ -2,6 +2,11 @@
 .login-history {
 	text-align: left;
 }
+.login-history td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
 .table-statistics {
 	margin: 30px auto;
@@ -16,15 +21,9 @@
 	font-style: italic;
 }
 
-#my-gravatar {
+#img-gravatar {
 	border: 2px dashed gray;
 	border-radius: 20px;
 	margin-top: 20px;
-}
-
-#form-clear-history {
-	border-width: 2px;
-	font-weight: normal;
-	margin: 0;
-	padding: 2px 10px;
+	max-width: 100%;
 }

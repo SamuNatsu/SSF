@@ -4,10 +4,10 @@ ini_set('display_errors', 'On');
 ini_set('error_reporting', E_ALL);
 
 // Require components
-require_once('../var/SleekDB/SleekDB.php');
 require_once('../var/Action.php');
-require_once('../var/DB.php');
-require_once('../var/Options.php');
+require_once('../var/Database.php');
+require_once('../var/Meta.php');
+require_once('../var/Option.php');
 require_once('../var/Path.php');
 require_once('../var/Router.php');
 require_once('../var/Session.php');
@@ -17,7 +17,9 @@ if (!is_file('../config.php')) exit;
 require_once('../config.php');
 
 // Initialize db
-\SSF\DB::init();
+\SSF\Database::init(__SSF_DB__);
+\SSF\Meta::init();
+\SSF\Option::init();
 
 // Initialize paths
 \SSF\Path::setDir('admin', '../admin');
@@ -35,6 +37,9 @@ require_once('./login/action.php');
 // Register dashboard page
 require_once('./dashboard/action.php');
 \SSF\Router::register('dashboard', './dashboard/index.php');
+
+// Register posts page
+\SSF\Router::register('posts', './posts/index.php');
 
 // Start session
 \SSF\Session::start();
