@@ -16,8 +16,8 @@ if (!defined('__SSF__')) exit;
 	<script src="<?php \SSF\Path::_url('shared', '/jquery.min.js'); ?>"></script>
 	<script src="<?php \SSF\Path::_url('root', '/script.js'); ?>" defer></script>
 </head>
-<body><div class="layout-list flex-mid">
-	<header class="flex-box flex-x-center flex-mid">Install Simple Site Framework</header>
+<body><div class="layout-list flex-c-center">
+	<header class="flex-box flex-center">Install Simple Site Framework</header>
 	<div class="container container-top width-50">
 		<h2>Intro</h2>
 		<p><b>First, thanks for choosing our framework!</b></p>
