@@ -24,7 +24,6 @@ if (!defined('__SSF__')) exit;
 		<p><em>Simple Site Framework</em> (aka SSF) is an open source framework that generate markdown web pages with custom theme templates, which enable users to easily maintain their site as a personal blog or personal wiki etc.</p>
 		<p>SSF features in generating static html pages, no need for installed databases, easy to make themes and simple APIs.</p>
 		<p>SSF uses other useful open source components, they're listed below:</p>
-		<p><a href="https://github.com/rakibtg/SleekDB" target="_blank"><b>SleekDB</b></a>: File based php database (MIT Licensed)</p>
 		<p><a href="https://github.com/erusev/parsedown" target="_blank"><b>Parsedown</b></a>: Markdown-Html parser (MIT Licensed)</p>
 		<p>Special thanks to the maintainers of components above!</p>
 		<p>The SSF version you install now is: <span class="warning">alpha 0.0.5</span></p>
