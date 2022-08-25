@@ -1,50 +1,69 @@
 <?php
 namespace SSF;
 
+// Router exception
+class RouterException extends Exception {}
+
+// Router
 class Router {
 	static private $_table = [];
 
-	static public function register(string $key, string $path, bool $overwrite = true): bool {
-		if (isset(self::$_table[$key]) && !$overwrite)
-			return false;
+	// Register a page
+	static public function register(string $name, string $path, bool $overwrite = false): void {
+		if (isset(self::$_table[$name]) && !$overwrite)
+			throw new RouterException("Router name \"$name\" duplicated, but overwrite is not allowed");
 
 		if (!is_file($path))
-			return false;
+			throw new RouterException("Router path \"$path\" not exists");
 
 		self::$_table[$key] = $path;
-		return true;
+	}
+	// Unregister a page
+	static public function unregister(string $name): void {
+		unset(self::$_table[$name]);
 	}
 
-	static public function unregister(string $key): void {
-		if (isset(self::$_table[$key]))
-			unset(self::$_table[$key]);
+	// Get page path
+	static public function getPath(string $name): ?string {
+		return self::$_table[$name] ?? null;
 	}
-
+	// Get routing table
 	static public function getTable(): array {
 		return self::$_table;
 	}
 
-	static public function GET(string $key, $fallback = false) {
-		return isset($_GET[$key]) ? $_GET[$key] : $fallback;
+	// Wrapped GET request
+	static public function GET(string $key): ?string {
+		return $_GET[$key] ?? null;
+	}
+	// Wrapped POST request
+	static public function POST(string $key): ?string {
+		return $_POST[$key] ?? null;
 	}
 
-	static public function POST(string $key, $fallback = false) {
-		return isset($_POST[$key]) ? $_POST[$key] : $fallback;
-	}
-
-	static public function jump(string $url): void {
-		header('Location: ' . $url);
+	// Redirection
+	static public function redirect(string $url, bool $permanent = false): void {
+		header('Location: ' . $url, true, $permanent ? 301 : 302);
 		exit;
 	}
 
+	// Despatch
 	static public function despatch(): void {
-		if (!isset($_GET['page']))
-			$_GET['page'] = '';
+		$action = self::GET('action');
+		$page = self::GET('page');
+		if ($action !== null && $page !== null)
+			throw new RouterException("Ambiguous request, \"action\" and \"page\" cannot GET in the same time");
 
-		if (isset($_GET['action']))
-			\SSF\Action::despatch();
-		else if (isset(self::$_table[$_GET['page']])) {
-			require_once(self::$_table[$_GET['page']]);
+		if ($action !== null) {
+			\SSF\Action::execute($name);
+			exit;
+		}
+
+		if ($page === null)
+			$page = '';
+
+		if (isset(self::$_table[$page])) {
+			require_once(self::$_table[$page]);
 			exit;
 		}
 
@@ -54,4 +73,4 @@ class Router {
 		exit;
 	}
 
-};
+}
