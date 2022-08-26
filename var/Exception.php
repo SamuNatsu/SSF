@@ -3,11 +3,14 @@ namespace SSF;
 
 // Exception
 class Exception extends \Exception {
-	public function __construct(string $message) {
+	protected $className;
+
+	public function __construct(string $className, string $message) {
 		parent::__construct($message);
+		$this->className = $className;
 	}
 
 	public function __toString(): string {
-		return __CLASS__ . " error: {$this->message}\n";
+		return "{$this->className}: {$this->message}\n";
 	}
 }
